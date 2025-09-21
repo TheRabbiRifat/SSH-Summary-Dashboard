@@ -90,3 +90,6 @@ mkdir -p $(dirname "$LOGFILE")
 touch "$LOGFILE"
 chmod 600 "$LOGFILE"
 echo "[$NOW] User: $(whoami) from $IP (Country: $IP_COUNTRY, ASN: $IP_ASN, ISP: $IP_ISP)" >> "$LOGFILE"
+# Pause for 6 seconds and then clear the screen
+sleep 6
+clear
