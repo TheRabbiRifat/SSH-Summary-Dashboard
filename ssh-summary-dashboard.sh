@@ -1,6 +1,7 @@
 #!/bin/bash
 # SSH Summary Dashboard
-# Works offline, shows OS, RAM, Hostname, IPv4/IPv6, Disk, Memory, Load, Top processes
+# Works offline but will fetch IP details if internet is available
+# Shows OS, RAM, Hostname, IPv4/IPv6, Disk, Memory, Load, Top processes, IP Geo/ASN
 # Logs all SSH logins
 
 RED="\e[31m"; GREEN="\e[32m"; YELLOW="\e[33m"; CYAN="\e[36m"; MAGENTA="\e[35m"; RESET="\e[0m"
@@ -31,6 +32,19 @@ NET_USAGE="IN: $((RX/1024/1024)) MB, OUT: $((TX/1024/1024)) MB"
 ALL_IPS=$(ip -o addr show | awk '/inet / {print $4}' | paste -sd ", " -)
 ALL_IP6S=$(ip -o addr show | awk '/inet6 / {print $4}' | paste -sd ", " -)
 
+# IP Geo/ASN lookup (optional, only if IP exists and curl available)
+IP_COUNTRY="N/A"; IP_REGION="N/A"; IP_CITY="N/A"; IP_ASN="N/A"; IP_ISP="N/A"
+if [ -n "$IP" ] && command -v curl >/dev/null 2>&1; then
+    GEO_JSON=$(curl -s "http://ip-api.com/json/$IP")
+    if [ "$GEO_JSON" != "" ]; then
+        IP_COUNTRY=$(echo "$GEO_JSON" | grep -oP '"country":"\K[^"]+')
+        IP_REGION=$(echo "$GEO_JSON" | grep -oP '"regionName":"\K[^"]+')
+        IP_CITY=$(echo "$GEO_JSON" | grep -oP '"city":"\K[^"]+')
+        IP_ASN=$(echo "$GEO_JSON" | grep -oP '"as":"\K[^"]+')
+        IP_ISP=$(echo "$GEO_JSON" | grep -oP '"isp":"\K[^"]+')
+    fi
+fi
+
 # Header
 echo -e "${CYAN}============================================================${RESET}"
 echo -e "${MAGENTA}   🚀 Welcome, ${GREEN}$(whoami)${MAGENTA}! You are logged into ${YELLOW}$HOSTNAME ${RESET}"
@@ -50,6 +64,11 @@ echo -e "${CYAN}------------------------------------------------------------${RE
 # Login IP
 if [ -n "$IP" ]; then
   echo -e "${YELLOW}Login From :${RESET} $IP"
+  echo -e "${YELLOW}Country    :${RESET} $IP_COUNTRY"
+  echo -e "${YELLOW}Region     :${RESET} $IP_REGION"
+  echo -e "${YELLOW}City       :${RESET} $IP_CITY"
+  echo -e "${YELLOW}ASN        :${RESET} $IP_ASN"
+  echo -e "${YELLOW}ISP        :${RESET} $IP_ISP"
 fi
 
 # System resources
@@ -70,4 +89,4 @@ LOGFILE="/var/log/ssh-summary-dashboard.log"
 mkdir -p $(dirname "$LOGFILE")
 touch "$LOGFILE"
 chmod 600 "$LOGFILE"
-echo "[$NOW] User: $(whoami) from $IP (IPv4: $ALL_IPS, IPv6: $ALL_IP6S)" >> "$LOGFILE"
+echo "[$NOW] User: $(whoami) from $IP (Country: $IP_COUNTRY, ASN: $IP_ASN, ISP: $IP_ISP)" >> "$LOGFILE"
