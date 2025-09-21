@@ -13,19 +13,17 @@ Logs every SSH login to `/var/log/ssh-summary-dashboard.log`.
 
 ## Installation
 
-### 1. Using Git Clone (traditional)
-```
-git clone https://github.com/TheRabbiRifat/SSH-Summary-Dashboard.git
-cd SSH-Summary-Dashboard
-sudo bash installer.sh
-```
 
-### 2. Using one-line `curl | bash` (recommended)
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/TheRabbiRifat/SSH-Summary-Dashboard/main/installer.sh || wget -qO- https://raw.githubusercontent.com/TheRabbiRifat/SSH-Summary-Dashboard/main/installer.sh)"
 
 ```
 Then log out and SSH back in to see the dashboard.
+
+## Uninstallation
+```
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/TheRabbiRifat/SSH-Summary-Dashboard/main/uninstaller.sh || wget -qO- https://raw.githubusercontent.com/TheRabbiRifat/SSH-Summary-Dashboard/main/uninstaller.sh)"
+```
 
 ## Log File
 
