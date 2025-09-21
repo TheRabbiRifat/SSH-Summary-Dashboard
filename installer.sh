@@ -6,8 +6,8 @@
 set -e
 
 if [ "$EUID" -ne 0 ]; then
-  echo "Please run as root: sudo bash $0"
-  exit 1
+    echo "Please run as root: sudo bash $0"
+    exit 1
 fi
 
 echo "Installing SSH Summary Dashboard..."
@@ -33,11 +33,9 @@ else
     DOWNLOADER="curl -fsSL -o"
 fi
 
-# Download dashboard script if not present
-if [ ! -f "./ssh-summary-dashboard.sh" ]; then
-    echo "Downloading ssh-summary-dashboard.sh..."
-    $DOWNLOADER ssh-summary-dashboard.sh "$DASHBOARD_URL"
-fi
+# Always download the latest dashboard script
+echo "Downloading the latest ssh-summary-dashboard.sh from GitHub..."
+$DOWNLOADER ssh-summary-dashboard.sh "$DASHBOARD_URL"
 
 # Copy dashboard script to profile.d
 cp ssh-summary-dashboard.sh /etc/profile.d/ssh-summary-dashboard.sh
