@@ -94,4 +94,4 @@ echo "[$NOW] User: $(whoami) from $IP (Country: $IP_COUNTRY, ASN: $IP_ASN, ISP: 
 echo "This dashboard will disappear in 6 seconds..."
 read -t 6 -n 1
 tput reset
-
+printf '\033c'
