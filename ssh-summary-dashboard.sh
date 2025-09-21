@@ -51,7 +51,7 @@ fi
 
 # --- HEADER ---
 echo -e "${CYAN}============================================================${RESET}"
-echo -e "${MAGENTA}   🚀 Welcome, ${GREEN}$(whoami)${MAGENTA}! You are logged into ${YELLOW}$HOSTNAME ${RESET}"
+echo -e "${MAGENTA}   🚀 Welcome, ${YELLO}$(whoami) !${MAGENTA} You are logged into ${YELLOW}$HOSTNAME ${RESET}"
 echo -e "${CYAN}============================================================${RESET}"
 echo -e "${GREEN}Date       :${RESET} $NOW"
 echo -e "${GREEN}OS         :${RESET} $OS"
