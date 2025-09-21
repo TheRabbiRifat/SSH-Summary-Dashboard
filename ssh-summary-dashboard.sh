@@ -91,5 +91,7 @@ touch "$LOGFILE"
 chmod 600 "$LOGFILE"
 echo "[$NOW] User: $(whoami) from $IP (Country: $IP_COUNTRY, ASN: $IP_ASN, ISP: $IP_ISP)" >> "$LOGFILE"
 # Pause for 6 seconds and then clear the screen
-sleep 6
-clear
+echo "This dashboard will disappear in 6 seconds..."
+read -t 6 -n 1
+tput reset
+
